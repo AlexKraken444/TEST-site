@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'TEST — игра про русскую школу',
-  description: 'Просто игра про русскую школу. Без какого-либо сюжета, верно?',
+  title: 'TEST — a game about a Russian school',
+  description: 'Just a game about a Russian school. With no story whatsoever, right?',
   openGraph: {
-    title: 'TEST — игра про русскую школу',
-    description: 'Обычная школа. Обычный день. Наверное.',
+    title: 'TEST — a game about a Russian school',
+    description: 'Everything makes sense. Nothing makes sense.',
     images: ['/test-logo.png'],
   },
 };
@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru">
+    <html lang="en">
       <body>{children}</body>
     </html>
   );

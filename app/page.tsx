@@ -32,7 +32,7 @@ const copy = {
 } as const;
 
 export default function Home() {
-  const [language, setLanguage] = useState<'ru' | 'en'>('ru');
+  const [language, setLanguage] = useState<'ru' | 'en'>('en');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const t = copy[language];
 
