@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const gameUrl = 'https://gamejolt.com/games/test/1018154';
 
@@ -33,6 +33,7 @@ const copy = {
 
 export default function Home() {
   const [language, setLanguage] = useState<'ru' | 'en'>('ru');
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const t = copy[language];
 
   useEffect(() => { document.documentElement.lang = language; }, [language]);
@@ -56,28 +57,100 @@ export default function Home() {
     );
     revealItems.forEach((item) => observer.observe(item));
 
-    let frame = 0;
-    const trackPointer = (event: PointerEvent) => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        document.documentElement.style.setProperty('--mouse-x', `${event.clientX}px`);
-        document.documentElement.style.setProperty('--mouse-y', `${event.clientY}px`);
-        document.documentElement.style.setProperty('--mouse-rx', `${(event.clientY / window.innerHeight - 0.5) * -5}deg`);
-        document.documentElement.style.setProperty('--mouse-ry', `${(event.clientX / window.innerWidth - 0.5) * 5}deg`);
-      });
-    };
-    window.addEventListener('pointermove', trackPointer, { passive: true });
-
     return () => {
       observer.disconnect();
-      window.removeEventListener('pointermove', trackPointer);
-      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const touchDevice = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    if (!canvas || reduceMotion || touchDevice) return;
+    const context = canvas.getContext('2d');
+    if (!context) return;
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let pixelRatio = Math.min(window.devicePixelRatio, 1.5);
+    let targetX = width / 2;
+    let targetY = height / 2;
+    let lensX = targetX;
+    let lensY = targetY;
+    let animationFrame = 0;
+
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      pixelRatio = Math.min(window.devicePixelRatio, 1.5);
+      canvas.width = Math.round(width * pixelRatio);
+      canvas.height = Math.round(height * pixelRatio);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    };
+
+    const move = (event: PointerEvent) => { targetX = event.clientX; targetY = event.clientY; };
+    const warp = (x: number, y: number) => {
+      const dx = x - lensX;
+      const dy = y - lensY;
+      const distance = Math.hypot(dx, dy);
+      const radius = Math.min(310, width * 0.28);
+      if (distance >= radius) return [x, y] as const;
+      const normalized = distance / radius;
+      const magnification = 1 + 0.72 * Math.pow(1 - normalized * normalized, 2);
+      return [lensX + dx * magnification, lensY + dy * magnification] as const;
+    };
+
+    const draw = () => {
+      lensX += (targetX - lensX) * 0.14;
+      lensY += (targetY - lensY) * 0.14;
+      context.clearRect(0, 0, width, height);
+
+      const glow = context.createRadialGradient(lensX, lensY, 0, lensX, lensY, 340);
+      glow.addColorStop(0, 'rgba(225,42,32,.18)');
+      glow.addColorStop(.45, 'rgba(225,42,32,.06)');
+      glow.addColorStop(1, 'rgba(225,42,32,0)');
+      context.fillStyle = glow;
+      context.fillRect(0, 0, width, height);
+
+      context.strokeStyle = 'rgba(255,255,255,.12)';
+      context.lineWidth = 1;
+      const spacing = 74;
+      const step = 9;
+      for (let x = -spacing; x <= width + spacing; x += spacing) {
+        context.beginPath();
+        for (let y = -step; y <= height + step; y += step) {
+          const point = warp(x, y);
+          if (y === -step) context.moveTo(point[0], point[1]); else context.lineTo(point[0], point[1]);
+        }
+        context.stroke();
+      }
+      for (let y = -spacing; y <= height + spacing; y += spacing) {
+        context.beginPath();
+        for (let x = -step; x <= width + step; x += step) {
+          const point = warp(x, y);
+          if (x === -step) context.moveTo(point[0], point[1]); else context.lineTo(point[0], point[1]);
+        }
+        context.stroke();
+      }
+      animationFrame = requestAnimationFrame(draw);
+    };
+
+    resize();
+    window.addEventListener('resize', resize);
+    window.addEventListener('pointermove', move, { passive: true });
+    draw();
+    return () => {
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('pointermove', move);
+      cancelAnimationFrame(animationFrame);
     };
   }, []);
 
   return (
     <main>
-      <div className="cursor-distortion" aria-hidden="true" />
+      <canvas ref={canvasRef} className="fisheye-background" aria-hidden="true" />
       <header className="site-header">
         <a className="mini-logo" href="#top" aria-label={t.homeLabel}>TEST</a>
         <nav aria-label={t.navLabel}>
