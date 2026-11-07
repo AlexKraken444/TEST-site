@@ -45,11 +45,6 @@ nav .play-link { border: 1px solid rgba(255,255,255,.5); padding: 12px 16px; }
 .red-card { background: var(--red); color: white; }
 .red-card .card-number, .red-card p { color: #210806; }
 .red-card h2 { font-size: clamp(45px,6vw,86px); }
-.cta-section { text-align: center; padding: clamp(90px,15vw,210px) 22px; background: var(--paper); color: var(--ink); }
-.cta-section p { color: var(--red); font: 800 11px monospace; text-transform: uppercase; letter-spacing: .2em; }
-.cta-section h2 { margin: 20px auto 45px; font-size: clamp(42px,8vw,110px); line-height: .9; letter-spacing: -.06em; text-transform: uppercase; }
-.cta-section a { display: inline-block; background: var(--red); color: white; padding: 20px 28px; font-weight: 900; text-transform: uppercase; font-size: 13px; letter-spacing: .08em; transition: transform .2s,box-shadow .2s; }
-.cta-section a:hover, .cta-section a:focus-visible { transform: translate(-4px,-4px); box-shadow: 8px 8px 0 #121212; }
 footer { min-height: 120px; display: flex; align-items: center; justify-content: space-between; padding: 30px clamp(22px,5vw,76px); border-top: 1px solid var(--line); color: #777; font: 700 11px monospace; text-transform: uppercase; letter-spacing: .1em; }
 footer img { width: 74px; height: 74px; object-fit: contain; opacity: .45; } footer a:hover { color: white; }
 @keyframes hero-arrival { from { opacity: 0; transform: translateY(35px) scale(.96); filter: blur(8px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
