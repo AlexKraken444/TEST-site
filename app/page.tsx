@@ -234,11 +234,11 @@ export default function Home() {
       <section className="principal-section" id="principal" aria-labelledby="principal-title">
         <div className="principal-portrait reveal reveal-left">
           <img src="/principal.png" alt={principal.imageAlt} />
-          <span>{principal.subtitle}</span>
         </div>
         <div className="principal-copy reveal reveal-right">
           <div className="card-number">{principal.label}</div>
           <h2 id="principal-title">{principal.title}</h2>
+          <p className="principal-subtitle">{principal.subtitle}</p>
           <div className="principal-intro">
             {principal.intro.map((line) => <p key={line}>{line}</p>)}
           </div>
