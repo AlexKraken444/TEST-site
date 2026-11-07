@@ -47,7 +47,7 @@ nav .play-link { border: 1px solid rgba(255,255,255,.5); padding: 12px 16px; }
 .red-card .card-number, .red-card p { color: #210806; }
 .red-card h2 { font-size: clamp(45px,6vw,86px); }
 .principal-section { display: grid; grid-template-columns: minmax(330px,.8fr) minmax(0,1.2fr); background: #101214; border-top: 1px solid var(--line); }
-.principal-portrait { display: block; align-self: start; overflow: hidden; }
+.principal-portrait { display: block; align-self: start; overflow: hidden; padding-top: clamp(32px,5vw,72px); }
 .principal-portrait img { display: block; width: 100%; height: auto; object-fit: contain; }
 .principal-copy { padding: clamp(55px,7vw,110px); background: var(--paper); color: var(--ink); }
 .principal-copy h2 { margin: 22px 0 8px; font-size: clamp(55px,8vw,120px); line-height: .83; letter-spacing: -.07em; }
