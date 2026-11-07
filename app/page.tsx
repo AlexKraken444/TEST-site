@@ -7,7 +7,7 @@ const gameUrl = 'https://gamejolt.com/games/test/1018154';
 const copy = {
   ru: {
     homeLabel: 'TEST, в начало страницы', navLabel: 'Основная навигация',
-    aboutGame: 'Об игре', aboutMe: 'Обо мне', game: 'Сама игра',
+    about: 'Об игре и обо мне', game: 'Сама игра',
     lead: 'Всё имеет смысл. Ничего не имеет смысла.', scroll: 'Смотреть ниже',
     trailer: 'Трейлер', trailerSoon: 'Трейлер скоро появится', trailerStatus: 'Видео находится в разработке',
     gameLabel: '02 / ОБ ИГРЕ', gameHeading: 'Об игре',
@@ -19,7 +19,7 @@ const copy = {
   },
   en: {
     homeLabel: 'TEST, back to top', navLabel: 'Main navigation',
-    aboutGame: 'About the game', aboutMe: 'About me', game: 'Play the game',
+    about: 'About game&me', game: 'Play the game',
     lead: 'Everything makes sense. Nothing makes sense.', scroll: 'Scroll down',
     trailer: 'Trailer', trailerSoon: 'Trailer coming soon', trailerStatus: 'The video is in development',
     gameLabel: '02 / ABOUT THE GAME', gameHeading: 'About the game',
@@ -108,9 +108,9 @@ export default function Home() {
       context.clearRect(0, 0, width, height);
 
       const glow = context.createRadialGradient(lensX, lensY, 0, lensX, lensY, 340);
-      glow.addColorStop(0, 'rgba(225,42,32,.18)');
-      glow.addColorStop(.45, 'rgba(225,42,32,.06)');
-      glow.addColorStop(1, 'rgba(225,42,32,0)');
+      glow.addColorStop(0, 'rgba(199,53,43,.18)');
+      glow.addColorStop(.45, 'rgba(199,53,43,.06)');
+      glow.addColorStop(1, 'rgba(199,53,43,0)');
       context.fillStyle = glow;
       context.fillRect(0, 0, width, height);
 
@@ -154,9 +154,8 @@ export default function Home() {
       <header className="site-header">
         <a className="mini-logo" href="#top" aria-label={t.homeLabel}>TEST</a>
         <nav aria-label={t.navLabel}>
-          <a href="#about-game">{t.aboutGame}</a>
-          <a href="#about-me">{t.aboutMe}</a>
-          <a className="play-link" href={gameUrl} target="_blank" rel="noreferrer">{t.game} <span aria-hidden="true">↗</span></a>
+          <a href="#about-game">{t.about}</a>
+          <a className="play-link" href={gameUrl} target="_blank" rel="noreferrer">{t.game}</a>
         </nav>
         <div className="language-switch" role="group" aria-label={t.languageLabel}>
           <button className={language === 'en' ? 'active' : ''} onClick={() => setLanguage('en')} aria-pressed={language === 'en'}>ENG</button>
@@ -169,7 +168,7 @@ export default function Home() {
         <div className="hero-glow" aria-hidden="true" />
         <img className="main-logo" src="/test-logo.png" alt={t.logoAlt} />
         <p className="hero-lead">{t.lead}</p>
-        <a className="scroll-cue" href="#trailer">{t.scroll} <span aria-hidden="true">↓</span></a>
+        <a className="scroll-cue" href="#trailer">{t.scroll}</a>
       </section>
 
       <section className="trailer-section reveal" id="trailer" aria-labelledby="trailer-title">
@@ -190,7 +189,7 @@ export default function Home() {
       </section>
 
       <footer className="reveal">
-        <img src="/test-logo.png" alt="" aria-hidden="true" /><a href="#top">{t.top} ↑</a>
+        <img src="/test-logo.png" alt="" aria-hidden="true" /><a href="#top">{t.top}</a>
       </footer>
     </main>
   );
