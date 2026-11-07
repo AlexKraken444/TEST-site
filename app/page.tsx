@@ -7,7 +7,7 @@ const gameUrl = 'https://gamejolt.com/games/test/1018154';
 const copy = {
   ru: {
     homeLabel: 'TEST, в начало страницы', navLabel: 'Основная навигация',
-    about: 'Об игре и обо мне', game: 'Сама игра',
+    about: 'Об игре и обо мне', principalNav: 'Директор', game: 'Сама игра',
     lead: 'Всё имеет смысл. Ничего не имеет смысла.', scroll: 'Смотреть ниже',
     trailer: 'Трейлер', trailerSoon: 'Трейлер скоро появится', trailerStatus: 'Видео находится в разработке',
     gameLabel: '02 / ОБ ИГРЕ', gameHeading: 'Об игре',
@@ -19,7 +19,7 @@ const copy = {
   },
   en: {
     homeLabel: 'TEST, back to top', navLabel: 'Main navigation',
-    about: 'About game&me', game: 'Play the game',
+    about: 'About game&me', principalNav: 'Principal', game: 'Play the game',
     lead: 'Everything makes sense. Nothing makes sense.', scroll: 'Scroll down',
     trailer: 'Trailer', trailerSoon: 'Trailer coming soon', trailerStatus: 'The video is in development',
     gameLabel: '02 / ABOUT THE GAME', gameHeading: 'About the game',
@@ -31,10 +31,52 @@ const copy = {
   },
 } as const;
 
+const principalCopy = {
+  ru: {
+    label: '04 / ПЕРСОНАЖ',
+    title: 'ДИРЕКТОР',
+    subtitle: 'Один из главных персонажей',
+    intro: ['Гроза всей школы!', 'ТОТ КТО НИКОГДА НЕ ЗАТЫКАЕТСЯ!', 'ВЕЛИКИЙ И НЕПОБЕДИМЫЙ…', 'ДИИИИРЕКТОР!!!'],
+    interview: 'И сегодня мы смогли взять у него интервью!',
+    imageAlt: 'Персонаж Директор',
+    dialogue: [
+      { speaker: 'interviewer', text: 'Директор?' },
+      { speaker: 'principal', text: 'Да я вас слушаю.' },
+      { speaker: 'interviewer', text: 'Для начала прошу вас ответить, чем вы\nлюбите заниматься в свободное время?' },
+      { speaker: 'principal', text: 'ХАХАХАХАХАХА! ЭТО КАКАЯ-ТО ШУТКА?\nУ МЕНЯ НЕТ СВОБОДНОГО ВРЕМЕНИ!!\nМНЕ НУЖНО ГОВОРИТЬ!!! ИНАЧЕ…' },
+      { speaker: 'interviewer', text: 'Спасибо что ответили! Пожалуй-ка мы закончим интервью…' },
+      { speaker: 'principal', text: 'ЕСЛИ Я БЫ МОГ Я БЫ СЖЁГ ТВОЙ ДОМ ДОТЛА И СМОТРЕЛ БЫ КАК ТЫ СГОРАЕШЬ В НЁМ ЖАЛКИЙ ЧЕЛОВЕК!!!\nХАХАХАХА\nСКОРО!!! К НАМ ПРИЕДУТ С ТВ!\nОЗЕРО...' },
+      { speaker: 'interviewer', text: 'Так, вот это уже было лишним!' },
+      { speaker: 'principal', text: 'ЛИШНИМ? ТВОЕ СУЩЕСТВОВАНИЕ БЫЛО ЛИШНИМ!!! ТЫ ХОТЬ ЗНАЕШЬ, ЧТО Я ВСЕХ ОБЕРЕГАЮ ОТ ОПАСНОСТИ УРОВНЯ КОНЦА СВЕТА???' },
+      { speaker: 'interviewer', text: 'В-всем пока! Конец интервью!!!' },
+    ],
+  },
+  en: {
+    label: '04 / CHARACTER',
+    title: 'THE PRINCIPAL',
+    subtitle: 'One of the main characters',
+    intro: ['The terror of the entire school!', 'THE ONE WHO NEVER STOPS TALKING!', 'THE GREAT AND UNDEFEATED…', 'THE PRIIIIINCIPAL!!!'],
+    interview: 'And today we managed to interview him!',
+    imageAlt: 'The Principal character',
+    dialogue: [
+      { speaker: 'interviewer', text: 'Principal?' },
+      { speaker: 'principal', text: 'Yes, I am listening.' },
+      { speaker: 'interviewer', text: 'First, please tell us what you like to do\nin your free time?' },
+      { speaker: 'principal', text: 'HAHAHAHAHAHA! IS THIS SOME KIND OF JOKE?\nI HAVE NO FREE TIME!!\nI NEED TO TALK!!! OTHERWISE…' },
+      { speaker: 'interviewer', text: 'Thank you for answering! I think we should end the interview…' },
+      { speaker: 'principal', text: 'IF I COULD, I WOULD BURN YOUR HOUSE TO THE GROUND AND WATCH YOU BURN INSIDE IT, YOU PATHETIC HUMAN!!!\nHAHAHAHA\nSOON!!! TV CREWS WILL COME TO US!\nTHE LAKE...' },
+      { speaker: 'interviewer', text: 'Okay, that was already too much!' },
+      { speaker: 'principal', text: 'TOO MUCH? YOUR EXISTENCE WAS TOO MUCH!!! DO YOU EVEN KNOW THAT I PROTECT EVERYONE FROM A DOOMSDAY-LEVEL THREAT???' },
+      { speaker: 'interviewer', text: 'G-goodbye everyone! End of interview!!!' },
+    ],
+  },
+} as const;
+
 export default function Home() {
   const [language, setLanguage] = useState<'ru' | 'en'>('en');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const t = copy[language];
+  const principal = principalCopy[language];
 
   useEffect(() => { document.documentElement.lang = language; }, [language]);
 
@@ -155,6 +197,7 @@ export default function Home() {
         <a className="mini-logo" href="#top" aria-label={t.homeLabel}>TEST</a>
         <nav aria-label={t.navLabel}>
           <a href="#about-game">{t.about}</a>
+          <a href="#principal">{t.principalNav}</a>
           <a className="play-link" href={gameUrl} target="_blank" rel="noreferrer">{t.game}</a>
         </nav>
         <div className="language-switch" role="group" aria-label={t.languageLabel}>
@@ -174,7 +217,7 @@ export default function Home() {
       <section className="trailer-section reveal" id="trailer" aria-labelledby="trailer-title">
         <div className="section-label"><span>01</span><h2 id="trailer-title">{t.trailer}</h2></div>
         <div className="trailer-frame">
-          <div className="play-button" aria-hidden="true">▶</div>
+          <div className="play-button" aria-hidden="true" />
           <p>{t.trailerSoon}</p><span>{t.trailerStatus}</span>
         </div>
       </section>
@@ -186,6 +229,28 @@ export default function Home() {
         <article className="info-card red-card reveal reveal-right" id="about-me">
           <div className="card-number">{t.authorLabel}</div><h2>{t.authorHeading}</h2><p>{t.authorText}</p>
         </article>
+      </section>
+
+      <section className="principal-section" id="principal" aria-labelledby="principal-title">
+        <div className="principal-portrait reveal reveal-left">
+          <img src="/principal.png" alt={principal.imageAlt} />
+          <span>{principal.subtitle}</span>
+        </div>
+        <div className="principal-copy reveal reveal-right">
+          <div className="card-number">{principal.label}</div>
+          <h2 id="principal-title">{principal.title}</h2>
+          <div className="principal-intro">
+            {principal.intro.map((line) => <p key={line}>{line}</p>)}
+          </div>
+          <p className="interview-lead">{principal.interview}</p>
+          <div className="dialogue">
+            {principal.dialogue.map((line, index) => (
+              <p className={line.speaker === 'principal' ? 'principal-line' : 'interviewer-line'} key={`${line.speaker}-${index}`}>
+                <span aria-hidden="true">-</span>{line.text}
+              </p>
+            ))}
+          </div>
+        </div>
       </section>
 
       <footer className="reveal">
